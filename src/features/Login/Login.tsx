@@ -15,7 +15,7 @@ import {Navigate} from "react-router-dom";
 
 export const Login = () => {
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector((state)=> state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
 
     type FormikErrorType = {
         email?: string
@@ -46,7 +46,7 @@ export const Login = () => {
 
             return errors
         },
-        onSubmit:( values )=> {
+        onSubmit: (values) => {
             dispatch(loginTC(values))
             formik.resetForm()
         },
@@ -68,21 +68,23 @@ export const Login = () => {
                     <p>Email: free@samuraijs.com</p>
                     <p>Password: free</p>
                 </FormLabel>
-                <form onSubmit={formik.handleSubmit} >
+                <form onSubmit={formik.handleSubmit}>
                     <FormGroup>
                         <TextField
                             label="Email"
                             margin="normal"
                             {...formik.getFieldProps('email')}
                         />
-                        {formik.touched.email && formik.errors.email ? <div style={{color: 'red'}} >{formik.errors.email}</div> : null}
+                        {formik.touched.email && formik.errors.email ?
+                            <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
                         <TextField
                             type="password"
                             label="Password"
                             margin="normal"
                             {...formik.getFieldProps('password')}
                         />
-                        {formik.touched.password && formik.errors.password ? <div style={{color: 'red'}} >{formik.errors.password}</div> : null}
+                        {formik.touched.password && formik.errors.password ?
+                            <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
 
                         <FormControlLabel
                             label={'Remember me'}
@@ -91,7 +93,6 @@ export const Login = () => {
                                 checked={formik.values.rememberMe}
                             />}
                         />
-
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
                             Login
                         </Button>

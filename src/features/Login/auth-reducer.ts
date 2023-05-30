@@ -8,6 +8,7 @@ import {
 } from '../../app/app-reducer'
 import {authAPI, AuthUserType, ResponseResultCode} from "../../api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import axios from "axios";
 
 const initialState = {
     isLoggedIn: false
@@ -30,18 +31,18 @@ export const setIsLoggedInAC = (value: boolean) =>
 export const loginTC = (data: AuthUserType) => async (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
 
-    try{
+    try {
         const res = await authAPI.login(data)
 
         if (res.data.resultCode === ResponseResultCode.OK) {
             dispatch(setIsLoggedInAC(true))
             dispatch(setAppStatusAC('succeeded'))
-        }else{
+        } else {
             handleServerAppError(res.data, dispatch);
         }
     } catch (error) {
-        //@ts-ignore
-        handleServerNetworkError(error, dispatch)
+        if (axios.isAxiosError(error))
+            handleServerNetworkError(error, dispatch)
     }
 
 }
@@ -55,9 +56,9 @@ export const logoutTC = () => async (dispatch: Dispatch<ActionsType>) => {
         } else {
             handleServerAppError(res.data, dispatch)
         }
-    }catch(error) {
-        //@ts-ignore
-        handleServerNetworkError(error, dispatch)
+    } catch (error) {
+        if (axios.isAxiosError(error))
+            handleServerNetworkError(error, dispatch)
     }
 }
 
@@ -73,8 +74,8 @@ export const initializeAppTC = () => async (dispatch: Dispatch<ActionsType>) => 
             handleServerAppError(res.data, dispatch);
         }
     } catch (error) {
-        //@ts-ignore
-        handleServerNetworkError(error, dispatch)
+        if (axios.isAxiosError(error))
+            handleServerNetworkError(error, dispatch)
     } finally {
         dispatch(setIsInitializedAC(true))
     }

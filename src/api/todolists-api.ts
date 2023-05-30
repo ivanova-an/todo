@@ -48,7 +48,6 @@ export const authAPI = {
 }
 
 // types
-
 export type UserType = {
     id: number,
     email: string,
