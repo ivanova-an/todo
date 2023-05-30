@@ -11,8 +11,10 @@ import LinearProgress from '@mui/material/LinearProgress';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Link, Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, Container} from "@mui/material";
 import {initializeAppTC, logoutTC} from "../features/Login/auth-reducer";
+import IconButton from "@mui/material/IconButton";
+import {Menu} from "@mui/icons-material";
 
 
 function App() {
@@ -39,27 +41,26 @@ function App() {
     }
 
     return (
-        <>
+        <div className="App">
+            <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar style={{justifyContent: "space-between"}}>
-                    <Link to={"/"} style={{textDecoration: 'none', color: 'unset'}}><Typography
-                        variant={"h6"}>Todolists</Typography></Link>
-                    {isLoggedIn &&
-                        <Button color={"inherit"} variant={"outlined"} onClick={onClickHandler}>Logout</Button>
-                    }
+                    <Typography variant="h6">
+                        TodoList
+                    </Typography>
+                    {isLoggedIn && <Button color="inherit" variant={"outlined"}  onClick={onClickHandler}>Logout</Button>}
                 </Toolbar>
+                {status === 'loading' && <LinearProgress/>}
             </AppBar>
-            <div style={{height: "10px"}}>
-                {status === "loading" && <LinearProgress/>}
-            </div>
-            <Routes>
-                <Route path='/' element={<TodolistsList/>}/>
-                <Route path="login" element={<Login/>}/>
-                <Route path="404" element={<h1>404: PAGE NOT FOUND</h1>}/>
-                <Route path="*" element={<Navigate to="/login"/>}/>
-            </Routes>
-            <ErrorSnackbar/>
-        </>
+            <Container fixed>
+                <Routes>
+                    <Route path ={'/'} element = {<TodolistsList/>}/>
+                    <Route path={'/login'} element = {<Login/>}/>
+                    <Route path={'/404'} element={<h1 style={{textAlign: 'center'}} >404: PAGE NOT FOUND</h1>} />
+                    <Route path = '*' element={<Navigate to='/login'/>}/>
+                </Routes>
+            </Container>
+        </div>
     )
 }
 
